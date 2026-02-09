@@ -1,8 +1,7 @@
-version: '3.1'
 services:
   web:
     user: root
-    image: odoo:18
+    image: odoo:18.0
     depends_on:
       - db
     ports:
@@ -14,8 +13,12 @@ services:
       - HOST=db
       - USER=odoo
       - PASSWORD=myodoo
-    #command: odoo -d odoo18 -i lynxter --dev xml
+    #command: odoo -d odoo18 -i rentcars --dev xml
+    extra_hosts:
+        - "host.docker.internal:host-gateway"
+
   db:
+    user: root
     image: postgres:13
     environment:
       - POSTGRES_DB=postgres
@@ -25,15 +28,53 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data/pgdata
   pgadmin:
+      user: root
+      image: dpage/pgadmin4:latest
+      environment:
+          PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com
+          PGADMIN_DEFAULT_PASSWORD: password
+          PGADMIN_LISTEN_PORT: 80
+      ports:
+          - 15432:80
+      volumes:
+          - ./pgadmin:/var/lib/pgadmin
+      depends_on:
+          - db
+  php:
     user: root
-    image: dpage/pgadmin4:latest
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com
-      PGADMIN_DEFAULT_PASSWORD: password
-      PGADMIN_LISTEN_PORT: 80
-    ports:
-      - 15432:80
+    #build: ./dockerphp
+    image: rogh/phpr6d07:latest
     volumes:
-      - ./pgadmin:/var/lib/pgadmin
+      - ./php:/var/www/html
+      - ./apachedefaultconf:/etc/apache2/sites-enabled
+    ports:
+      - "8000:80"
     depends_on:
-      - db
+      - mysql
+    links:
+      - mysql
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    restart: always
+    ports:
+      - 8082:80
+    volumes:
+      - /sessions
+    depends_on:
+      - mysql
