@@ -28,3 +28,41 @@ $odoo_username = $current_user->user_email;
 
 // et sans oublier de récupérer la clé d'api de l'utilisateur courant
 $odoo_apikey = get_user_meta($current_user->ID, 'odooapikey',true); 
+
+function odooConnect() {
+    global $odoo_url, $odoo_db, $odoo_username, $odoo_apikey;
+
+
+    if ($odoo_url == "" || $odoo_db == "" || $odoo_username == "" || $odoo_apikey == "") {
+        return "";
+    }
+
+
+    $common = ripcord::client($odoo_url."/xmlrpc/2/common");
+    $common->version();
+    $uid = $common->authenticate($odoo_db, $odoo_username, $odoo_apikey, array());
+    return $uid;
+}
+
+function getAllPrinters() {
+    global $odoo_url, $odoo_db, $odoo_username, $odoo_apikey;
+
+
+    $uid = odooConnect();
+
+
+    if(!empty($uid)){
+    
+        $models = ripcord::client("$odoo_url/xmlrpc/2/object");
+ 
+         $domain = [];
+        
+        $kwargs = ['order' => 'model desc', 'domain' => $domain, 'fields' => ['model', 'serial_number', 'thumbnail', 'manufacture_date', 'building_status', 'age']];
+        $lesimprimantes = $models->execute_kw($odoo_db, $uid, $odoo_apikey, 'lynxter.printer', 'search_read', [], $kwargs);
+        
+        return $lesimprimantes;
+    }
+    else{
+        return false;
+    }
+}
