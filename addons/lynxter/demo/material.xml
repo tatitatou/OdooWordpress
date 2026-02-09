@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<odoo noupdate="0">
+    <data>
+        <record id="xml_material_1" model="lynxter.material">
+            <field name="name">PLA-001</field>
+            <field name="type">FIL</field>
+            <field name="color">Yellow</field>
+            <field name="manufacturer">Lynxter</field>
+            <field name="printer_ids" eval="[(4, ref('lynxter.xml_printer_1'))]"></field>
+        </record>
+        <record id="xml_material_2" model="lynxter.material">
+            <field name="name">PA-001</field>
+            <field name="type">FIL</field>
+            <field name="color">Black</field>
+            <field name="manufacturer">Lynxter</field>
+            <field name="printer_ids" eval="[(4, ref('lynxter.xml_printer_1')),
+                                              (4, ref('lynxter.xml_printer_2'))]"></field>
+        </record>
+        <record id="xml_material_3" model="lynxter.material">
+            <field name="name">SIL-001</field>
+            <field name="type">LIQ</field>
+            <field name="color">Black</field>
+            <field name="manufacturer">Lynxter</field>
+            <field name="printer_ids" eval="[(4, ref('lynxter.xml_printer_3'))]"></field>
+        </record>
+        <record id="xml_material_4" model="lynxter.material">
+            <field name="name">SIL-002</field>
+            <field name="type">LIQ</field>
+            <field name="color">Grey</field>
+            <field name="manufacturer">Lynxter</field>
+            <field name="printer_ids" eval="[(4, ref('lynxter.xml_printer_3'))]"></field>
+        </record>
+    </data>
+</odoo>

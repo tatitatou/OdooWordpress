@@ -1,0 +1,66 @@
+<odoo>
+    <record id="view_printer_kanban" model="ir.ui.view">
+        <field name="name">Printer Kanban</field>
+        <field name="model">lynxter.printer</field>
+        <field name="arch" type="xml">
+            <kanban
+                default_group_by="building_status"
+                class="o_kanban_small_column"
+                quick_create="false"
+            >
+
+                <field name="serial_number"/>
+                <field name="model"/>
+                <field name="location"/>
+                <field name="thumbnail"/>
+                <field name="building_status"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record">
+
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle btn" data-toggle="dropdown">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a type="edit" class="dropdown-item">Edit</a>
+                                    <a type="delete" class="dropdown-item">Delete</a>
+                                </div>
+                            </div>
+
+                            <div class="oe_kanban_content">
+
+                                <div class="o_kanban_record_title">
+                                    <strong>
+                                        <field name="serial_number"/>
+                                    </strong>
+                                </div>
+
+                                <div class="o_kanban_record_body">
+                                    <field name="thumbnail" widget="image" class="oe_kanban_image"/>
+                                    <div>
+                                        <field name="model"/>
+                                    </div>
+                                    <div t-if="record.location.raw_value">
+                                        <field name="location"/>
+                                    </div>
+                                </div>
+
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span class="o_kanban_badge">
+                                            <field name="building_status"/>
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

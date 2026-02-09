@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_printer_manager,PrinterManager,model_lynxter_printer,lynxter_group_manager,1,1,1,1
+access_printer_user,PrinterUser,model_lynxter_printer,lynxter_group_user,1,0,0,0
+access_material_manager,MaterialManager,model_lynxter_material,lynxter_group_manager,1,1,1,1
+access_material_user,MaterialUser,model_lynxter_material,lynxter_group_user,1,0,0,0
+access_toolhead_manager,ToolheadManager,model_lynxter_toolhead,lynxter_group_manager,1,1,1,1
+access_toolhead_user,ToolheadUser,model_lynxter_toolhead,lynxter_group_user,1,0,0,0

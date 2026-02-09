@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<odoo noupdate="0">
+    <data>
+        <record id="xml_toolhead_1" model="lynxter.toolhead">
+            <field name="name">FIL-11</field>
+            <field name="type">FIL</field>
+            <field name="serial_number">FIL-11_001</field>
+            <field name="printer_id" ref="lynxter.xml_printer_1"/>
+        </record>
+
+        <record id="xml_toolhead_2" model="lynxter.toolhead">
+            <field name="name">FIL-11</field>
+            <field name="type">FIL</field>
+            <field name="serial_number">FIL-11_002</field>
+            <field name="printer_id" ref="lynxter.xml_printer_2"/>
+        </record>
+
+        <record id="xml_toolhead_3" model="lynxter.toolhead">
+            <field name="name">FIL-21</field>
+            <field name="type">FIL</field>
+            <field name="serial_number">FIL-21_001</field>
+            <field name="printer_id" ref="lynxter.xml_printer_2"/>
+        </record>
+
+        <record id="xml_toolhead_4" model="lynxter.toolhead">
+            <field name="name">LIQ-21</field>
+            <field name="type">LIQ</field>
+            <field name="serial_number">LIQ-21_001</field>
+            <field name="printer_id" ref="lynxter.xml_printer_3"/>
+        </record>
+
+        <record id="xml_toolhead_5" model="lynxter.toolhead">
+            <field name="name">PAS-11</field>
+            <field name="type">PAS</field>
+            <field name="serial_number">PAS-11_001</field>
+            <field name="printer_id" ref="lynxter.xml_printer_4"/>
+        </record>
+    </data>
+</odoo>

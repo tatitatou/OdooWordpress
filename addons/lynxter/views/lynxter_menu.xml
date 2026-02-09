@@ -1,0 +1,28 @@
+<odoo>
+    <!-- Menu de l'application lynxter -->
+    <menuitem id="menu_lynxter" name="Lynxter" />
+    <!-- Action pour ouvrir la liste des véhicules -->
+    <record id="action_lynxter_printer" model="ir.actions.act_window">
+        <field name="name">Lynxter Printers</field>
+        <field name="res_model">lynxter.printer</field>
+        <field name="view_mode">list,form,kanban</field>
+    </record>
+    <record id="action_lynxter_material" model="ir.actions.act_window">
+        <field name="name">Lynxter Materials</field>
+        <field name="res_model">lynxter.material</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_lynxter_toolhead" model="ir.actions.act_window">
+        <field name="name">Lynxter Toolheads</field>
+        <field name="res_model">lynxter.toolhead</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Liens de menu -->
+<menuitem id="menu_lynxter_printer" name="Printers" parent="menu_lynxter"  
+          action="action_lynxter_printer" sequence="0"  />
+<menuitem id="menu_lynxter_material" name="Materials" parent="menu_lynxter"  
+          action="action_lynxter_material" sequence="1"  />
+<menuitem id="menu_lynxter_toolhead" name="Toolheads" parent="menu_lynxter"  
+          action="action_lynxter_toolhead" sequence="2"  />
+</odoo>

@@ -1,0 +1,18 @@
+<odoo>
+ <data>
+ <!-- Création du groupe utilisateur du module Lynxter -->
+  <record id="lynxter_group_user" model="res.groups">
+   <field name="name">User Lynxter</field>
+   <field name="category_id" ref="base.module_category_inventory_printers"/>
+   <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+  </record>
+  <!-- Création du groupe Manager du module Lynxter -->
+  <record id="lynxter_group_manager" model="res.groups">
+   <field name="name">Manager Lynxter</field>
+   <field name="category_id" ref="base.module_category_inventory_printers"/>
+   <field name="implied_ids" eval="[(4, ref('lynxter_group_user'))]"/>
+   <field name="users" eval="[(4, ref('base.user_root')),
+                              (4, ref('base.user_admin'))]"/>
+  </record>
+ </data>
+</odoo>

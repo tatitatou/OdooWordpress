@@ -1,0 +1,24 @@
+<odoo>
+ <template id="printer_list_template" name="Printer List">
+  <t t-call="website.layout">
+    <div class="oe_structure"/>
+        <div id="wrap" class="container">
+          <h1>Printers</h1>
+          <div class="row">
+             <t t-foreach="printers" t-as="printer">
+               <h1 t-field="printer.model"></h1>
+               <p>Serial number:<span t-field="printer.serial_number"></span>
+               </p>
+               <p>Manufacturer:<span t-field="printer.manufacture_date"></span>
+               </p>
+               <p>
+                  <img t-attf-src="data:image/jpg;base64,{{ printer.thumbnail }}"  
+                       height="120" width="120"
+                       style='margin:0px;padding-top:0px;'/>
+               </p>
+             </t>
+          </div>
+     </div>
+  </t>
+ </template>
+</odoo>

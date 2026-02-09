@@ -1,0 +1,53 @@
+<odoo>
+    <record id="view_form_material" model="ir.ui.view">
+        <field name="name">Material form</field>
+        <field name="model">lynxter.material</field>
+        <field name="arch" type="xml">
+            <form string="material">
+                <header>
+                    <button name="button_check_compatibility" type="object"
+                        string="Check compatibility"></button>
+                </header>
+                <sheet>
+                    <group name="group_line_1">
+                        <group name="group_column_left">
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="color"/>
+                            <field name="manufacturer"/>
+                        </group>
+                    
+                        <group name="group_column_right">
+                            <field name="printer_ids" widget="many2many"/>
+                        </group>
+                    </group>
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_list_material" model="ir.ui.view">
+        <field name="name">Material list</field>
+        <field name="model">lynxter.material</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="color"/>
+                <field name="manufacturer"/>
+                <field name="printer_ids"/>
+            </list>
+        </field>
+
+    </record>
+    <record id="view_search_material" model="ir.ui.view">
+        <field name="name">Material Filter</field>
+        <field name="model">lynxter.material</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="type"/>
+            </search>
+        </field>
+
+    </record>
+</odoo>

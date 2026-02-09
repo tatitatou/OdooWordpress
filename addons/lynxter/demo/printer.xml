@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<odoo noupdate="0">
+    <data>
+        <record id="xml_printer_1" model="lynxter.printer">
+            <field name="model">S600D</field>
+            <field name="active">1</field>
+            <field name="serial_number">1</field>
+            <field name="manufacture_date">2023-01-01</field>
+            <field name="thumbnail" type="base64" file="lynxter/static/photos/Lynxter_S600D-scaled.jpg"></field>
+            <field name="location">Paris</field>
+        </record>
+        <record id="xml_printer_2" model="lynxter.printer">
+            <field name="model">S300X_FIL</field>
+            <field name="active">1</field>
+            <field name="serial_number">1</field>
+            <field name="manufacture_date">2022-05-04</field>
+            <field name="thumbnail" type="base64" file="lynxter/static/photos/lynxter-s300x-imprimante-3d-fdm.webp"></field>
+            <field name="location">Milan</field>
+        </record>
+        <record id="xml_printer_3" model="lynxter.printer">
+            <field name="model">S300X_LIQ</field>
+            <field name="active">1</field>
+            <field name="serial_number">1</field>
+            <field name="manufacture_date">2021-01-01</field>
+            <field name="thumbnail" type="base64" file="lynxter/static/photos/s300x -liq-21liq11.webp"></field>
+            <field name="location">Franckford</field>
+        </record>
+        <record id="xml_printer_4" model="lynxter.printer">
+            <field name="model">S300X_PAS</field>
+            <field name="active">1</field>
+            <field name="serial_number">1</field>
+            <field name="manufacture_date">2023-02-10</field>
+            <field name="thumbnail" type="base64" file="lynxter/static/photos/s300x -liq-21liq11.webp"></field>
+            <field name="location">Le Havre</field>
+        </record>
+    </data>
+</odoo>

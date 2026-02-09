@@ -1,0 +1,56 @@
+<odoo>
+    <record id="view_form_printer" model="ir.ui.view">
+        <field name="name">Printer form</field>
+        <field name="model">lynxter.printer</field>
+        <field name="arch" type="xml">
+            <form string="printer">
+                <sheet>
+                    <group name="group_line_1">
+                        <group name="group_column_left">
+                            <field name="active"/>
+                            <field name="manufacture_date"/>
+                            <field name="sending_date"/>
+                            <field name="location"/>
+                            <field name="age"/>
+                            <field name="serial_number"/>
+                            <field name="building_status"/>
+                        </group>
+                    
+                        <group name="group_column_right">
+                            <field name="thumbnail" widget="image" options='{"size": [150, 140]}'/>
+                            <field name="model"/>
+                        </group>
+                    </group>
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_list_printer" model="ir.ui.view">
+        <field name="name">Printer list</field>
+        <field name="model">lynxter.printer</field>
+        <field name="arch" type="xml">
+           <list>
+            <field name="serial_number"/>
+            <field name="manufacture_date"/>
+            <field name="location" groups="lynxter.lynxter_group_manager,base.group_system"/>
+            <field name="thumbnail" widget="image" options='{"size": [150, 140]}'/>
+        </list>
+        </field>
+
+    </record>
+    <record id="view_search_printer" model="ir.ui.view">
+        <field name="name">Printer Filter</field>
+        <field name="model">lynxter.printer</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="model"/>
+                <filter name="filter_inactive" string="Inactive"
+                        domain="[('active','=',False)]"/>
+                <filter name="filter_active" string="Active"
+                        domain="[('active','=',True)]"/>
+            </search>
+        </field>
+
+    </record>
+</odoo>
