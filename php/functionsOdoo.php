@@ -11,75 +11,79 @@ $cleapi = "f157113d3d816ffbb7649894b7ffbed1bb26faef";
 $common = ripcord::client($url . "/xmlrpc/2/common");
 $uid = $common->authenticate($db, $username, $cleapi, []);
 
+if (!$uid) {
+    die("Échec de l'authentification.");
+}
+
 $object = ripcord::client("$url/xmlrpc/2/object");
 
 /**
  * SEARCH
  */
-function search($object, $db, $uid, $cleapi)
+function search_printers($object, $db, $uid, $cleapi)
 {
     $domain = [
         '|',
-        ['state', '=', 'usable'],
-        ['state', '=', 'broken'],
+        ['building_status', '=', 'stock'],
+        ['building_status', '=', 'sent'],
     ];
 
-    $donneesrecues = $object->execute_kw(
+    $result = $object->execute_kw(
         $db,
         $uid,
         $cleapi,
-        'rentcars.vehicle',
+        'lynxter.printer',
         'search',
         [$domain],
         [
             'offset' => 0,
             'limit' => null,
-            'order' => 'date_purchased desc'
+            'order' => 'manufacture_date desc'
         ]
     );
 
-    echo "<pre>" . print_r($donneesrecues, true) . "</pre>";
+    echo "<pre>SEARCH:\n" . print_r($result, true) . "</pre>";
 }
 
 /**
  * SEARCH COUNT
  */
-function search_count($object, $db, $uid, $cleapi)
+function search_count_printers($object, $db, $uid, $cleapi)
 {
     $domain = [
-        ['age_vehicle', '>', 1],
-        ['state', '!=', 'broken'],
+        ['age', '>', 1],
+        ['building_status', '=', 'stock'],
     ];
 
-    $donneesrecues = $object->execute_kw(
+    $count = $object->execute_kw(
         $db,
         $uid,
         $cleapi,
-        'rentcars.vehicle',
+        'lynxter.printer',
         'search_count',
         [$domain]
     );
 
-    echo "<pre>Nombre de véhicules de plus d'1 an non cassés : " . $donneesrecues . "</pre>";
+    echo "<pre>Nombre d'imprimantes de plus d'un an en stock: $count</pre>";
 }
 
 /**
  * SEARCH READ
  */
-function search_read($object, $db, $uid, $cleapi)
+function search_read_printers($object, $db, $uid, $cleapi)
 {
     $domain = [
-        ['age_vehicle', '>', 1],
-        ['state', '!=', 'broken'],
+        ['age', '>', 1],
+        ['building_status', '!=', 'sent'],
     ];
 
-    $fields = ['model', 'date_purchased', 'garage_id', 'age_vehicle'];
+    $fields = ['serial_number', 'model', 'manufacture_date', 'age', 'building_status', 'location'];
 
-    $donneesrecues = $object->execute_kw(
+    $result = $object->execute_kw(
         $db,
         $uid,
         $cleapi,
-        'rentcars.vehicle',
+        'lynxter.printer',
         'search_read',
         [$domain],
         [
@@ -88,123 +92,102 @@ function search_read($object, $db, $uid, $cleapi)
         ]
     );
 
-    echo "<pre>" . print_r($donneesrecues, true) . "</pre>";
+    echo "<pre>SEARCH_READ:\n" . print_r($result, true) . "</pre>";
 }
 
 /**
  * CREATE
  */
-function create_vehicle($object, $db, $uid, $cleapi)
+function create_printers($object, $db, $uid, $cleapi)
 {
-    // Première voiture
-    $imagePath = "photos/toyota.jpg";
+    // Image
+    $imagePath = __DIR__ . "/photos/Lynxter_S600D-scaled.jpg";
     $imageData = file_get_contents($imagePath);
     $base64Image = base64_encode($imageData);
 
-    $vehicule1 = [
-        'model' => 'voiture API1',
-        'date_purchased' => '2021-07-20',
-        'immatriculation' => 'GX841DD',
-        'garage_id' => 1,
-        'state' => 'usable',
+    $printer1 = [
+        'serial_number' => 1001,
+        'model' => 'S600D',
+        'manufacture_date' => '2021-07-20',
+        'sending_date' => '2021-08-01',
+        'location' => 'Atelier A',
+        'building_status' => 'stock',
         'thumbnail' => $base64Image,
-        'option_ids' => [[6, 0, [1, 2]]] // many2many
+        'material_ids' => [[6, 0, [1, 2]]], // IDs de matériaux existants
     ];
 
-    // Deuxième voiture
-    $imagePath = "photos/ford.jpg";
-    $imageData = file_get_contents($imagePath);
-    $base64Image = base64_encode($imageData);
-
-    $vehicule2 = [
-        'model' => 'voiture API2',
-        'date_purchased' => '2021-07-21',
-        'immatriculation' => 'GH841DD',
-        'garage_id' => 1,
-        'state' => 'usable',
-        'thumbnail' => $base64Image,
-        'option_ids' => [[6, 0, []]]
+    $printer2 = [
+        'serial_number' => 1002,
+        'model' => 'S300X_FIL',
+        'manufacture_date' => '2022-01-10',
+        'sending_date' => null,
+        'location' => 'Atelier B',
+        'building_status' => 'work in progress',
+        'material_ids' => [[6, 0, [1]]],
     ];
 
-    $vals_list = [$vehicule1, $vehicule2];
+    $vals_list = [$printer1, $printer2];
 
-    $donneesrecues = $object->execute_kw(
+    $result = $object->execute_kw(
         $db,
         $uid,
         $cleapi,
-        'rentcars.vehicle',
+        'lynxter.printer',
         'create',
         [$vals_list]
     );
 
-    echo "<pre>" . print_r($donneesrecues, true) . "</pre>";
+    echo "<pre>CREATE:\n" . print_r($result, true) . "</pre>";
 }
 
 /**
  * WRITE (mise à jour)
  */
-function write_vehicle($object, $db, $uid, $cleapi, $id)
+function write_printer($object, $db, $uid, $cleapi, $id)
 {
-    // Modification d'un élément
-    $donneesrecues = $object->execute_kw(
+    $result = $object->execute_kw(
         $db,
         $uid,
         $cleapi,
-        'rentcars.vehicle',
+        'lynxter.printer',
         'write',
         [[(int)$id], [
-            'model' => "voiture modifiée par l'API",
-            'date_purchased' => '2021-07-15',
-            'immatriculation' => 'VV000VV',
-            'garage_id' => 2,
-            'state' => 'broken',
+            'location' => "Entrepôt principal",
+            'building_status' => 'sent',
+            'sending_date' => date('Y-m-d'),
         ]]
     );
 
-    echo "<pre>" . print_r($donneesrecues, true) . "</pre>";
-
-    // Modification de plusieurs éléments
-    $donneesrecues = $object->execute_kw(
-        $db,
-        $uid,
-        $cleapi,
-        'rentcars.vehicle',
-        'write',
-        [[1, 2, 5], [
-            'garage_id' => 2,
-            'state' => 'usable'
-        ]]
-    );
-
-    echo "<pre>" . print_r($donneesrecues, true) . "</pre>";
+    echo "<pre>WRITE:\n" . print_r($result, true) . "</pre>";
 }
 
 /**
  * UNLINK (suppression)
  */
-function unlink_vehicle($object, $db, $uid, $cleapi, $id)
+function unlink_printer($object, $db, $uid, $cleapi, $id)
 {
-    // Suppression d'un élément
-    $donneesrecues = $object->execute_kw(
+    $result = $object->execute_kw(
         $db,
         $uid,
         $cleapi,
-        'rentcars.vehicle',
+        'lynxter.printer',
         'unlink',
         [[(int)$id]]
     );
 
-    echo "<pre>" . print_r($donneesrecues, true) . "</pre>";
-
-    // Suppression de plusieurs éléments
-    $donneesrecues = $object->execute_kw(
-        $db,
-        $uid,
-        $cleapi,
-        'rentcars.vehicle',
-        'unlink',
-        [[18, 19]]
-    );
-
-    echo "<pre>" . print_r($donneesrecues, true) . "</pre>";
+    echo "<pre>UNLINK:\n" . print_r($result, true) . "</pre>";
 }
+
+/**
+ * === APPELS DE TEST ===
+ */
+
+// Décommente ce que tu veux tester :
+
+search_printers($object, $db, $uid, $cleapi);
+search_count_printers($object, $db, $uid, $cleapi);
+search_read_printers($object, $db, $uid, $cleapi);
+
+// create_printers($object, $db, $uid, $cleapi);
+// write_printer($object, $db, $uid, $cleapi, 1);
+// unlink_printer($object, $db, $uid, $cleapi, 10);
